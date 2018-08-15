@@ -35,11 +35,17 @@ def add(task: Task) -> int:
 
 
 def get(task_id: int) -> Task:
-    pass
+    if not isinstance(task_id, int):
+        raise TypeError
+
+    return Task
 
 
-def list_tasks(owenr: typing.Optional[str] = None) -> typing.List:
-    pass
+def list_tasks(owner: typing.Optional[str] = None) -> typing.List:
+    if not isinstance(owner, str):
+        raise TypeError
+
+    return []
 
 
 def count() -> int:
