@@ -1,6 +1,9 @@
 import typing
 from dataclasses import dataclass
 
+from tinydb import TinyDB, Query
+
+db = object
 
 @dataclass
 class Task:
@@ -72,6 +75,13 @@ def start_tasks_db(db_path: str, db_type: str) -> None:
     if db_type not in ('tiny', 'mongo'):
         raise ValueError("db_type must be a 'tiny' or 'mongo'")
 
+    if db_type == 'tiny':
+        global db
+        db = TinyDB(f'{db_path}/db.json')
+    elif db_type == 'mongo':
+        pass
+
 
 def stop_tasks_db() -> None:
-    pass
+    global db
+    db.close()
