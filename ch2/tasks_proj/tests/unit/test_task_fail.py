@@ -1,6 +1,6 @@
 """Use the Task type to show test failures."""
 
-from ch2.tasks import Task
+from tasks import Task
 
 
 def test_task_equality():
