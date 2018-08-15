@@ -28,6 +28,9 @@ class Task:
 
 
 def add(task: Task) -> int:
+    if not isinstance(task, Task):
+        raise TypeError
+
     return task.id
 
 
