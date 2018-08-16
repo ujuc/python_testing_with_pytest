@@ -1,7 +1,7 @@
 import typing
 from dataclasses import dataclass
 
-from tinydb import TinyDB, Query
+from tinydb import TinyDB, where, Query
 
 db = object
 
@@ -34,6 +34,13 @@ def add(task: Task) -> int:
     if not isinstance(task, Task):
         raise TypeError
 
+    global db
+    if not db.all():
+        task.id = 1
+    else:
+        task.id = db.all()[-1].doc_id + 1
+
+    db.insert(task._asdict())
     return task.id
 
 
@@ -41,7 +48,12 @@ def get(task_id: int) -> Task:
     if not isinstance(task_id, int):
         raise TypeError
 
-    return Task
+    global db
+    task_db = db.search(Query().id == task_id)[0]
+    task = Task(
+        task_db['summary'], task_db['owner'], task_db['done'], task_db['id']
+    )
+    return task
 
 
 def list_tasks(owner: typing.Optional[str] = None) -> typing.List:
