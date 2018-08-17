@@ -69,7 +69,8 @@ def count() -> int:
 
 
 def update(task_id: int, task: Task) -> None:
-    pass
+    if not isinstance(task_id, int) or not isinstance(task, Task):
+        raise TypeError
 
 
 def delete(task_id: int) -> None:
