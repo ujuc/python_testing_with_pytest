@@ -1,5 +1,6 @@
 import typing
 from dataclasses import dataclass
+import random
 
 from tinydb import TinyDB, where, Query
 
@@ -80,7 +81,7 @@ def delete_all() -> None:
 
 
 def unique_id() -> int:
-    pass
+    return random.randint(1, 20)
 
 
 def start_tasks_db(db_path: str, db_type: str) -> None:
