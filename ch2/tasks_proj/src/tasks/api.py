@@ -81,7 +81,9 @@ def delete_all() -> None:
 
 
 def unique_id() -> int:
-    return random.randint(1, 20)
+    global db
+    uid = db.all()[-1].doc_id + 1
+    return uid
 
 
 def start_tasks_db(db_path: str, db_type: str) -> None:
