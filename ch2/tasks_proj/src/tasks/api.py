@@ -68,7 +68,7 @@ def count() -> int:
     pass
 
 
-def update(taks_id: int, task: Task) -> None:
+def update(task_id: int, task: Task) -> None:
     pass
 
 
