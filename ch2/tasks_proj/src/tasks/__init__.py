@@ -1,4 +1,3 @@
 from .api import *
-from .version import version
+from .__version__ import __version__
 
-__version__ = version
