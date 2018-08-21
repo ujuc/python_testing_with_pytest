@@ -28,6 +28,16 @@ def test_added_task_has_id_set():
     assert task_from_db.id == task_id
 
 
+def test_add_increases_count(db_with_3_tasks):
+    """Test tasks.add() affect on tasks.count()."""
+    # GIVEN a db with 3 tasks
+    #  WHEN another tasks is added
+    tasks.add(Task('throw a party'))
+
+    #  THEN the count increases by 1
+    assert tasks.count() == 4
+
+
 @pytest.fixture(autouse=True)
 def initialized_tasks_db(tmpdir):
     """Connect to db before testing, disconnect after."""
