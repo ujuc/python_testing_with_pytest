@@ -51,11 +51,12 @@ def db_with_multi_per_owner(tasks_db, tasks_mult_per_owner):
         tasks.add(t)
 
 
-@pytest.fixture(scope='session')
-def tasks_db_session(tmpdir_factory):
+# @pytest.fixture(scope='session', params=['tiny',])
+@pytest.fixture(scope='session', params=['tiny', 'mongo'])
+def tasks_db_session(tmpdir_factory, request):
     """Connect to db before tests, disconnect after."""
     temp_dir = tmpdir_factory.mktemp('temp')
-    tasks.start_tasks_db(str(temp_dir), 'tiny')
+    tasks.start_tasks_db(str(temp_dir), request.param)
     yield
     tasks.stop_tasks_db()
 
