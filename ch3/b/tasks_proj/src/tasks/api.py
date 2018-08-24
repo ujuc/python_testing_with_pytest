@@ -4,7 +4,8 @@ import random
 
 from tinydb import TinyDB, where, Query
 
-db = object
+
+_tasksdb = object
 
 
 @dataclass
@@ -36,13 +37,13 @@ def add(task: Task) -> int:
     if not isinstance(task, Task):
         raise TypeError
 
-    global db
-    if not db.all():
+    global _tasksdb
+    if not _tasksdb.all():
         task.id = 1
     else:
-        task.id = db.all()[-1].doc_id + 1
+        task.id = _tasksdb.all()[-1].doc_id + 1
 
-    db.insert(task._asdict())
+    _tasksdb.insert(task._asdict())
     return task.id
 
 
@@ -50,8 +51,8 @@ def get(task_id: int) -> Task:
     if not isinstance(task_id, int):
         raise TypeError
 
-    global db
-    task_db = db.search(Query().id == task_id)[0]
+    global _tasksdb
+    task_db = _tasksdb.search(Query().id == task_id)[0]
     task = Task(
         task_db['summary'], task_db['owner'], task_db['done'], task_db['id']
     )
@@ -66,8 +67,8 @@ def list_tasks(owner: typing.Optional[str] = None) -> typing.List:
 
 
 def count() -> int:
-    global db
-    return len(db)
+    global _tasksdb
+    return len(_tasksdb)
 
 
 def update(task_id: int, task: Task) -> None:
@@ -84,22 +85,28 @@ def delete_all() -> None:
 
 
 def unique_id() -> int:
-    global db
-    uid = db.all()[-1].doc_id + 1
+    global _tasksdb
+    uid = _tasksdb.all()[-1].doc_id + 1
     return uid
 
 
 def start_tasks_db(db_path: str, db_type: str) -> None:
-    if db_type not in ('tiny', 'mongo'):
-        raise ValueError("db_type must be a 'tiny' or 'mongo'")
+    """Connect API functions to a db."""
+    if not isinstance(db_path, str):
+        raise TypeError('db_path must be a string')
+
+    global _tasksdb
 
     if db_type == 'tiny':
-        global db
-        db = TinyDB(f'{db_path}/db.json')
+        from . import tasksdb_tinydb
+        _tasksdb = tasksdb_tinydb.start_tasks_db(db_path)
     elif db_type == 'mongo':
-        pass
+        from . import tasksdb_pymongo
+        _tasksdb = tasksdb_pymongo.start_tasks_db(db_path)
+    else:
+        raise ValueError("db_type must be a 'tiny' or 'mongo'")
 
 
 def stop_tasks_db() -> None:
-    global db
-    db.close()
+    global _tasksdb
+    _tasksdb.close()
