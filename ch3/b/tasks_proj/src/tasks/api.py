@@ -1,6 +1,5 @@
 import typing
 from dataclasses import dataclass
-import random
 
 from tinydb import TinyDB, where, Query
 
@@ -38,10 +37,7 @@ def add(task: Task) -> int:
         raise TypeError
 
     global _tasksdb
-    if not _tasksdb.all():
-        task.id = 1
-    else:
-        task.id = _tasksdb.all()[-1].doc_id + 1
+    task.id = _tasksdb.ids()
 
     _tasksdb.insert(task._asdict())
     return task.id
@@ -68,7 +64,7 @@ def list_tasks(owner: typing.Optional[str] = None) -> typing.List:
 
 def count() -> int:
     global _tasksdb
-    return len(_tasksdb)
+    return _tasksdb.count()
 
 
 def update(task_id: int, task: Task) -> None:
