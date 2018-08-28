@@ -14,7 +14,9 @@ setup(
     description='Pytest example Task App',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=find_packages(),
+    # packages=find_packages(),
+    packages=['tasks'],
+    package_dir={'tasks': 'src/tasks'},
     install_requires=[
         'pytest', 'tinydb', 'pymongo',
     ],
