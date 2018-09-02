@@ -1,28 +1,37 @@
 from tinydb import TinyDB, Query
 
-_db = object
-
 
 def start_tasks_db(db_path):
-    global _db
-    _db =  TinyDB(f'{db_path}/db.json')
-    return _db
+    return TinyDbCursor(db_path)
 
 
-def ids():
-    global _db
-    if not _db.all():
-        return 1
-    else:
-        return _db.all()[-1].doc_id + 1
+class TinyDbCursor(object):
+    def __init__(self, db_path):
+        self.db = TinyDB(f'{db_path}/db.json')
 
+    def close(self) -> None:
+        self.db.close()
 
-def count() -> int:
-    global _db
-    return len(_db)
+    def get_id(self) -> int:
+        if not self.db.all():
+            return 1
+        else:
+            return self.get_uid()
 
+    def get_uid(self) -> int:
+        return self.count() + 1
 
-def uid() -> int:
-    global _db
-    uid = _db.all()[-1].doc_id + 1
-    return uid
+    def count(self) -> int:
+        return len(self.db)
+
+    def insert(self, param: dict) -> None:
+        self.db.insert(param)
+
+    def select(self, ids: int) -> dict:
+        return self.db.search(Query().id == ids)[0]
+
+    def delete(self, ids: int) -> None:
+        self.db.remove(Query().id == ids)
+
+    def delete_all(self):
+        self.db.purge()

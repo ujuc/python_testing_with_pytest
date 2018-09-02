@@ -37,8 +37,7 @@ def add(task: Task) -> int:
         raise TypeError
 
     global _tasksdb
-    task.id = _tasksdb.ids()
-
+    task.id = _tasksdb.get_uid()
     _tasksdb.insert(task._asdict())
     return task.id
 
@@ -48,7 +47,7 @@ def get(task_id: int) -> Task:
         raise TypeError
 
     global _tasksdb
-    task_db = _tasksdb.search(Query().id == task_id)[0]
+    task_db = _tasksdb.select(task_id)
     task = Task(
         task_db['summary'], task_db['owner'], task_db['done'], task_db['id']
     )
@@ -73,16 +72,18 @@ def update(task_id: int, task: Task) -> None:
 
 
 def delete(task_id: int) -> None:
-    pass
+    global _tasksdb
+    _tasksdb.delete(task_id)
 
 
 def delete_all() -> None:
-    pass
+    global _tasksdb
+    _tasksdb.delete_all()
 
 
 def unique_id() -> int:
     global _tasksdb
-    uid = _tasksdb.all()[-1].doc_id + 1
+    uid = _tasksdb.get_uid()
     return uid
 
 
