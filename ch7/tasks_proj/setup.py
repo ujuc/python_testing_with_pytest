@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='tasks',
-    version=pkg_resources.require('tasks')[0].version,
+    version='0.1.1',
     author='Thomas ujuc',
     author_email='sungjin.kang@ujuc.me',
     description='Pytest example Task App',
