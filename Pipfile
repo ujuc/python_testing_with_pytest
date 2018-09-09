@@ -8,6 +8,8 @@ pytest = "*"
 tinydb = "*"
 pymongo = "*"
 pytest-cov = "*"
+click = "*"
+pytest-mock = "*"
 
 [dev-packages]
 pylint = "*"
