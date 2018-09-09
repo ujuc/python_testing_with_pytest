@@ -23,6 +23,12 @@ class MongoDbCursor(object):
     def get_uid(self) -> int:
         return self.count() + 1
 
+    def get_all_list(self) -> list:
+        return self.db.find()
+
+    def get_list(self, owner) -> list:
+        return self.db.find({'owner': owner})
+
     def count(self) -> int:
         return self.db.count()
 

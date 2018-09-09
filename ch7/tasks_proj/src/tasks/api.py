@@ -58,7 +58,21 @@ def list_tasks(owner: typing.Optional[str] = None) -> typing.List:
     if not isinstance(owner, str):
         raise TypeError
 
-    return []
+    result_list = []
+    if not owner:
+        get_list = _tasksdb.get_list(owner)
+
+    else:
+        get_list = _tasksdb.get_all_list()
+
+    for data in get_list:
+        result_list.append(
+            Task(
+                data['summary'], data['owner'], data['done'], data['id']
+            )
+        )
+
+    return result_list
 
 
 def count() -> int:
