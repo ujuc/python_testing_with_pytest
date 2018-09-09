@@ -15,7 +15,7 @@ class TestAdd():
     def test_done_not_bool(self):
         """Should raise an exception if done is not a bool."""
         with pytest.raises(ValueError):
-            tasks.add(Task(summary='summary', done=True))
+            tasks.add(Task(summary='summary', done='True'))
 
 
 def test_add_raises():

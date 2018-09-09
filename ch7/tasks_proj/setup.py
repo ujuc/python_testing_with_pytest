@@ -1,7 +1,6 @@
 #!/usr/bin/evn python
 
-from setuptools import setup, find_packages
-import pkg_resources
+from setuptools import setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -14,7 +13,6 @@ setup(
     description='Pytest example Task App',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    # packages=find_packages(),
     packages=['tasks'],
     package_dir={'tasks': 'src/tasks'},
     install_requires=[
