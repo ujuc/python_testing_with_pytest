@@ -10,6 +10,7 @@ pymongo = "*"
 pytest-cov = "*"
 click = "*"
 pytest-mock = "*"
+tox = "*"
 
 [dev-packages]
 pylint = "*"
